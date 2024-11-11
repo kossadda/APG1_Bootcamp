@@ -9,9 +9,9 @@ import (
 )
 
 type Flags struct {
-	Mean bool
+	Mean   bool
 	Median bool
-	Mode bool
+	Mode   bool
 	StdDev bool
 }
 
@@ -25,7 +25,7 @@ func main() {
 func readFlags() Flags {
 	var flags Flags
 
-	flag.BoolVar(&flags.Mean ,"mean", true, "Mean value")
+	flag.BoolVar(&flags.Mean, "mean", true, "Mean value")
 	flag.BoolVar(&flags.Median, "median", true, "Median value")
 	flag.BoolVar(&flags.Mode, "mode", true, "Mode value")
 	flag.BoolVar(&flags.StdDev, "stddev", true, "Standart deviation value")
@@ -42,19 +42,19 @@ func outResults(massive []int, flags *Flags) {
 
 	if len(massive) > 0 {
 		if flags.Mean {
-			fmt.Printf("Mean: %f\n", anscombe.GetMean(massive))
+			fmt.Printf("Mean: %.2f\n", anscombe.GetMean(massive))
 		}
 
 		if flags.Median {
-			fmt.Printf("Median: %f\n", anscombe.GetMedian(massive))
+			fmt.Printf("Median: %.2f\n", anscombe.GetMedian(massive))
 		}
 
 		if flags.Mode {
-			fmt.Printf("Mode: %f\n", anscombe.GetMode(massive))
+			fmt.Printf("Mode: %.2f\n", anscombe.GetMode(massive))
 		}
 
 		if flags.StdDev {
-			fmt.Printf("SD: %f\n", anscombe.GetDeviation(massive))
+			fmt.Printf("SD: %.2f\n", anscombe.GetDeviation(massive))
 		}
 	}
 }
