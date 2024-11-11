@@ -154,6 +154,7 @@ He couldn't help but notice that the thief had not only stolen his recipes, but 
 First of all, he had to learn how to read the database. The owner already had a CLI, so he decided that reading the file should be straightforward, so both these should work (files can be distinguished by an extension, for simplicity):
 
 `~$ ./readDB -f original_database.xml`
+
 `~$ ./readDB -f stolen_database.json`
 
 Not only that, but he also decided that it shouldn't be too difficult to read both files using the same interface, which he called `DBReader`. That is, reading different formats means that we have different *implementations* of the same `DBReader` interface, which should spit out the same object types as a result, whether it's reading from the original database or the stolen one. Right, his idea is to choose the appropriate implementation based on a file extension.
