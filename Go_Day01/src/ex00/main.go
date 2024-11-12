@@ -21,7 +21,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
 	}
-	
+
 	reader.Print(recipes)
 }
 
