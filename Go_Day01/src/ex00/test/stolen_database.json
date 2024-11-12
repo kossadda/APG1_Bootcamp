@@ -11,8 +11,7 @@
         },
         {
           "ingredient_name": "Strawberries",
-          "ingredient_count": "8",
-          "ingredient_unit": "mugs"
+          "ingredient_count": "8"
         },
         {
           "ingredient_name": "Coffee Beans",
@@ -21,8 +20,7 @@
         },
         {
           "ingredient_name": "Cinnamon",
-          "ingredient_count": "1",
-          "ingredient_unit": "mugs"
+          "ingredient_count": "1"
         }
       ]
     },

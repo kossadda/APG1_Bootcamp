@@ -111,7 +111,7 @@
         },
         {
           "ingredient_name": "Strawberries",
-          "ingredient_count": "8"  // ingredient_unit is not even here!
+          "ingredient_count": "8"  // ingredient_unit здесь даже нет!
         },
         {
           "ingredient_name": "Coffee Beans",
@@ -144,7 +144,7 @@
 }
 ```
 
-He couldn't help but notice that the thief had not only stolen his recipes, but had also altered some of them. Some ingredients were missing, numbers were changed, units were renamed. So he prepared for revenge!
+Он не мог не заметить, что вор не только украл его рецепты, но и изменил некоторые из них. Некоторые ингредиенты отсутствовали, числа были изменены, единицы измерения были переименованы. Поэтому он приготовился к мести!
 
 
 <h2 id="chapter-iv" >Глава IV</h2>

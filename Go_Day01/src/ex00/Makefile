@@ -1,5 +1,5 @@
 GO := go
-EXE := program
+EXE := readDB
 ARG := 
 
 all: build run
