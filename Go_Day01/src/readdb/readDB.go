@@ -1,21 +1,18 @@
 package readdb
 
 import (
-	"flag"
 	"fmt"
-	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/ex00/encode"
+	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/encode"
+	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
 	"os"
 )
 
 type DBReader interface {
-	Read(file []byte) (encode.Recipes, error)
-	Print(recipes encode.Recipes)
+	Read(file []byte) (recipes.Recipes, error)
+	Print(recipes recipes.Recipes)
 }
 
-func DefineFile(reader *DBReader) (file []byte, err error) {
-	filename := flag.String("f", "", "Filename to read (xml or json)")
-	flag.Parse()
-
+func DefineFile(reader *DBReader, filename *string) (file []byte, err error) {
 	file, ext, err := pathRead(filename)
 	if err == nil {
 		if ext == "xml" {

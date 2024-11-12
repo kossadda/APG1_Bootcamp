@@ -1,16 +1,20 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/ex00/encode"
-	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/ex00/readdb"
+	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/readdb"
+	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
 	"os"
 )
 
 func main() {
 	var reader readdb.DBReader
-	var recipes encode.Recipes
-	file, err := readdb.DefineFile(&reader)
+	var recipes recipes.Recipes
+	filename := flag.String("f", "", "Filename to read (xml or json)")
+	flag.Parse()
+
+	file, err := readdb.DefineFile(&reader, filename)
 
 	if err == nil {
 		recipes, err = reader.Read(file)
