@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"main/anscombe"
-	"main/data"
+	"github.com/kossadda/APG1_Bootcamp/Go_Day00/src/anscombe"
+	"github.com/kossadda/APG1_Bootcamp/Go_Day00/src/data"
 	"sort"
 )
 

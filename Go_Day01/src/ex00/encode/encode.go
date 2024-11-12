@@ -33,7 +33,7 @@ func (r *RecipesXML) Read(file []byte) (Recipes, error) {
 	if err != nil {
 		return Recipes{}, err
 	}
-	
+
 	return recipes, nil
 }
 
