@@ -9,21 +9,24 @@ import (
 )
 
 type DBReader interface {
-	Read(file []byte) error
-	Print()
+	Read(file []byte) (encode.Recipes, error)
+	Print(recipes encode.Recipes)
 }
 
 func main() {
 	file, reader := defineFile()
 
-	err := reader.Read(file)
-	if err == nil {
-		reader.Print()
+	recipes, err := reader.Read(file)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		os.Exit(1)
 	}
+	
+	reader.Print(recipes)
 }
 
 func defineFile() (file []byte, reader DBReader) {
-	filename := flag.String("f", "", "Filename to read ('xml' or 'json')")
+	filename := flag.String("f", "", "Filename to read (xml or json)")
 	flag.Parse()
 
 	file, ext, err := pathReader.PathRead(filename)

@@ -7,12 +7,8 @@ import (
 	"os"
 )
 
-type RecipesXML struct {
-	Cakes []cake `xml:"cake"`
-}
-
-type RecipesJSON struct {
-	Cakes []cake `json:"cake"`
+type Recipes struct {
+	Cakes []cake `xml:"cake" json:"cake"`
 }
 
 type cake struct {
@@ -27,48 +23,42 @@ type ingredient struct {
 	Unit  string `xml:"itemunit" json:"ingredient_unit"`
 }
 
-func (i *ingredient) str() string {
-	return fmt.Sprintf("%s: %s %s\n", i.Name, i.Count, i.Unit)
-}
+type RecipesXML struct{}
 
-func (c *cake) str() string {
-	s := fmt.Sprintf("%s\nStove Time: %s\nIngredients:\n", c.Name, c.StoveTime)
+type RecipesJSON struct{}
 
-	for i, ingr := range c.Ingredients {
-		s += fmt.Sprintf("%d) %s", i+1, ingr.str())
+func (r *RecipesXML) Read(file []byte) (Recipes, error) {
+	var recipes Recipes
+	err := xml.Unmarshal(file, &recipes)
+	if err != nil {
+		return Recipes{}, err
 	}
-
-	return s
+	return recipes, nil
 }
 
-func (r *RecipesXML) Read(file []byte) error {
-	err := xml.Unmarshal(file, r)
+func (r *RecipesJSON) Read(file []byte) (Recipes, error) {
+	var recipes Recipes
+	err := json.Unmarshal(file, &recipes)
+	if err != nil {
+		return Recipes{}, err
+	}
+	return recipes, nil
+}
+
+func (r *RecipesXML) Print(recipes Recipes) {
+	jsonData, err := json.MarshalIndent(recipes, "", "    ")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
+		return
 	}
-
-	return err
+	fmt.Println(string(jsonData))
 }
 
-func (r *RecipesJSON) Read(file []byte) error {
-	err := json.Unmarshal(file, r)
+func (r *RecipesJSON) Print(recipes Recipes) {
+	xmlData, err := xml.MarshalIndent(recipes, "", "    ")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
+		return
 	}
-
-	return err
-}
-
-func (r *RecipesXML) Print() {
-	fmt.Printf("XML list of cakes:\n\n")
-	for i, cake := range r.Cakes {
-		fmt.Printf("%d. %s\n", i+1, cake.str())
-	}
-}
-
-func (r *RecipesJSON) Print() {
-	fmt.Printf("JSON list of cakes:\n\n")
-	for i, cake := range r.Cakes {
-		fmt.Printf("%d. %s\n", i+1, cake.str())
-	}
+	fmt.Println(string(xmlData))
 }
