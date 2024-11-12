@@ -14,7 +14,9 @@ func main() {
 
 	if err == nil {
 		recipes, err = reader.Read(file)
-	} else {
+	}
+
+	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
 	}

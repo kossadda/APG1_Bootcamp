@@ -33,6 +33,7 @@ func (r *RecipesXML) Read(file []byte) (Recipes, error) {
 	if err != nil {
 		return Recipes{}, err
 	}
+	
 	return recipes, nil
 }
 
@@ -42,6 +43,7 @@ func (r *RecipesJSON) Read(file []byte) (Recipes, error) {
 	if err != nil {
 		return Recipes{}, err
 	}
+
 	return recipes, nil
 }
 
@@ -51,6 +53,7 @@ func (r *RecipesXML) Print(recipes Recipes) {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		return
 	}
+
 	fmt.Println(string(jsonData))
 }
 
@@ -60,5 +63,6 @@ func (r *RecipesJSON) Print(recipes Recipes) {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		return
 	}
+
 	fmt.Println(string(xmlData))
 }
