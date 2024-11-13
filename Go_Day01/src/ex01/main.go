@@ -14,7 +14,7 @@ func main() {
 	new_path := flag.String("new", "", "Stolen database (xml or json)")
 	flag.Parse()
 
-	comparedb.CompareRecipes(getRecipe(old_path), getRecipe(new_path))
+	comparedb.Compare(getRecipe(old_path), getRecipe(new_path))
 }
 
 func getRecipe(path *string) (rec recipes.Recipes) {

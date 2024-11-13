@@ -1,11 +1,12 @@
 GO := go
 EXE00 := readDB
 EXE01 := compareDB
+EXE02 := compareFS
 ARG := 
 
 deb:
-	@go build -o $(EXE01) ex01/main.go
-	@./$(EXE01) --old=test/original_database.xml --new=test/stolen_database.json
+	@go build -o $(EXE02) ex02/main.go
+	@./$(EXE02)
 
 all: build run
 
@@ -14,6 +15,9 @@ build_ex00:
 
 build_ex01:
 	@$(GO) build -o $(EXE01) ex01/main.go
+
+build_ex02:
+	@$(GO) build -o $(EXE02) ex02/main.go
 
 clean:
 	rm -f $(EXE00)

@@ -5,7 +5,7 @@ import (
 	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
 )
 
-func CompareRecipes(old recipes.Recipes, new recipes.Recipes) {
+func Compare(old recipes.Recipes, new recipes.Recipes) {
 	fmt.Print(compareCakes(old, new))
 	fmt.Print(compareTimes(old, new))
 	fmt.Print(compareIngredients(old, new))
