@@ -10,19 +10,19 @@ import (
 )
 
 func main() {
-	old_path := flag.String("old", "", "Original database (xml or json)")
-	new_path := flag.String("new", "", "Stolen database (xml or json)")
+	oldPath := flag.String("old", "", "Original database (xml or json)")
+	newPath := flag.String("new", "", "Stolen database (xml or json)")
 	flag.Parse()
 
-	comparedb.Compare(getRecipe(old_path), getRecipe(new_path))
+	comparedb.Compare(getRecipe(oldPath), getRecipe(newPath))
 }
 
 func getRecipe(path *string) (rec recipes.Recipes) {
 	var reader readdb.DBReader
-	new_file, err := readdb.DefineFile(&reader, path)
+	newFile, err := readdb.DefineFile(&reader, path)
 
 	if err == nil {
-		rec, err = reader.Read(new_file)
+		rec, err = reader.Read(newFile)
 	}
 
 	if err != nil {

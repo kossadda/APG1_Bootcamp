@@ -8,7 +8,12 @@ import (
 	"strconv"
 )
 
-func GetData() (numbers []int) {
+const (
+	MinValue = -100000
+	MaxValue = 100000
+)
+
+func NumberData() (numbers []int) {
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
@@ -26,7 +31,7 @@ func GetData() (numbers []int) {
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Error when entering a number:", err)
 		} else {
-			if value <= 100000 && value >= -100000 {
+			if value >= MinValue && value <= MaxValue {
 				numbers = append(numbers, value)
 			} else {
 				err := fmt.Errorf("number must be in the range [-100000:100000]")

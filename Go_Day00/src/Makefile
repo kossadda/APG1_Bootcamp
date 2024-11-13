@@ -10,7 +10,6 @@ run:
 	./$(EXE)
 
 clean:
-	rm -f go.mod
 	rm -f $(EXE)
 
 fmt:

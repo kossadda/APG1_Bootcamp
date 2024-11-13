@@ -13,26 +13,26 @@ func Compare(old recipes.Recipes, new recipes.Recipes) {
 }
 
 func compareCakes(old recipes.Recipes, new recipes.Recipes) (comp string) {
-	old_сakes := make(map[string]bool)
-	new_сakes := make(map[string]bool)
+	oldCakes := make(map[string]bool)
+	newCakes := make(map[string]bool)
 
 	for _, cake := range old.Cakes {
-		old_сakes[cake.Name] = true
+		oldCakes[cake.Name] = true
 	}
 
 	for _, cake := range new.Cakes {
-		new_сakes[cake.Name] = true
+		newCakes[cake.Name] = true
 	}
 
-	for cake_name := range new_сakes {
-		if !old_сakes[cake_name] {
-			comp += fmt.Sprintf("ADDED cake \"%s\"\n", cake_name)
+	for cakeName := range newCakes {
+		if !oldCakes[cakeName] {
+			comp += fmt.Sprintf("ADDED cake \"%s\"\n", cakeName)
 		}
 	}
 
-	for cake_name := range old_сakes {
-		if !new_сakes[cake_name] {
-			comp += fmt.Sprintf("REMOVED cake \"%s\"\n", cake_name)
+	for cakeName := range oldCakes {
+		if !newCakes[cakeName] {
+			comp += fmt.Sprintf("REMOVED cake \"%s\"\n", cakeName)
 		}
 	}
 
@@ -40,20 +40,20 @@ func compareCakes(old recipes.Recipes, new recipes.Recipes) (comp string) {
 }
 
 func compareTimes(old recipes.Recipes, new recipes.Recipes) (comp string) {
-	old_сakes := make(map[string]string)
-	new_сakes := make(map[string]string)
+	oldCakes := make(map[string]string)
+	newCakes := make(map[string]string)
 
 	for _, cake := range old.Cakes {
-		old_сakes[cake.Name] = cake.StoveTime
+		oldCakes[cake.Name] = cake.StoveTime
 	}
 
 	for _, cake := range new.Cakes {
-		new_сakes[cake.Name] = cake.StoveTime
+		newCakes[cake.Name] = cake.StoveTime
 	}
 
-	for cake_name, new_time := range new_сakes {
-		if old_time, exists := old_сakes[cake_name]; exists && old_time != new_time {
-			comp += fmt.Sprintf("CHANGED cooking time for cake \"%s\" - \"%s\" instead of \"%s\"\n", cake_name, new_time, old_time)
+	for cakeName, newTime := range newCakes {
+		if oldTime, exists := oldCakes[cakeName]; exists && oldTime != newTime {
+			comp += fmt.Sprintf("CHANGED cooking time for cake \"%s\" - \"%s\" instead of \"%s\"\n", cakeName, newTime, oldTime)
 		}
 	}
 
@@ -61,21 +61,21 @@ func compareTimes(old recipes.Recipes, new recipes.Recipes) (comp string) {
 }
 
 func compareIngredients(old recipes.Recipes, new recipes.Recipes) (comp string) {
-	old_сakes := make(map[string]recipes.Cake)
-	new_сakes := make(map[string]recipes.Cake)
+	oldCakes := make(map[string]recipes.Cake)
+	newCakes := make(map[string]recipes.Cake)
 
 	for _, cake := range old.Cakes {
-		old_сakes[cake.Name] = cake
+		oldCakes[cake.Name] = cake
 	}
 
 	for _, cake := range new.Cakes {
-		new_сakes[cake.Name] = cake
+		newCakes[cake.Name] = cake
 	}
 
-	for cake_name, new_cake := range new_сakes {
-		if old_cake, exists := old_сakes[cake_name]; exists {
-			comp += addedIngredients(old_cake, new_cake)
-			comp += removedIngredients(old_cake, new_cake)
+	for cakeName, newCake := range newCakes {
+		if oldCake, exists := oldCakes[cakeName]; exists {
+			comp += addedIngredients(oldCake, newCake)
+			comp += removedIngredients(oldCake, newCake)
 		}
 	}
 
@@ -83,20 +83,20 @@ func compareIngredients(old recipes.Recipes, new recipes.Recipes) (comp string) 
 }
 
 func compareUnits(old recipes.Recipes, new recipes.Recipes) (comp string) {
-	old_сakes := make(map[string]recipes.Cake)
-	new_сakes := make(map[string]recipes.Cake)
+	oldCakes := make(map[string]recipes.Cake)
+	newCakes := make(map[string]recipes.Cake)
 
 	for _, cake := range old.Cakes {
-		old_сakes[cake.Name] = cake
+		oldCakes[cake.Name] = cake
 	}
 
 	for _, cake := range new.Cakes {
-		new_сakes[cake.Name] = cake
+		newCakes[cake.Name] = cake
 	}
 
-	for cake_name, new_cake := range new_сakes {
-		if old_cake, exists := old_сakes[cake_name]; exists {
-			comp += changedUnit(old_cake, new_cake)
+	for cakeName, newCake := range newCakes {
+		if oldCake, exists := oldCakes[cakeName]; exists {
+			comp += changedUnit(oldCake, newCake)
 		}
 	}
 
@@ -104,17 +104,17 @@ func compareUnits(old recipes.Recipes, new recipes.Recipes) (comp string) {
 }
 
 func changedUnit(old recipes.Cake, new recipes.Cake) (comp string) {
-	for _, new_ingr := range new.Ingredients {
-		for _, old_ingr := range old.Ingredients {
-			if new_ingr.Name == old_ingr.Name {
-				if new_ingr.Unit != old_ingr.Unit {
-					if new_ingr.Unit == "" {
-						comp += fmt.Sprintf("REMOVED unit \"%s\" for ingredient \"%s\" for cake \"%s\"\n", old_ingr.Unit, old_ingr.Name, old.Name)
+	for _, newIngr := range new.Ingredients {
+		for _, oldIngr := range old.Ingredients {
+			if newIngr.Name == oldIngr.Name {
+				if newIngr.Unit != oldIngr.Unit {
+					if newIngr.Unit == "" {
+						comp += fmt.Sprintf("REMOVED unit \"%s\" for ingredient \"%s\" for cake \"%s\"\n", oldIngr.Unit, oldIngr.Name, old.Name)
 					} else {
-						comp += fmt.Sprintf("CHANGED unit for ingredient \"%s\" for cake \"%s\" - \"%s\" instead of \"%s\"\n", new_ingr.Name, old.Name, new_ingr.Unit, old_ingr.Unit)
+						comp += fmt.Sprintf("CHANGED unit for ingredient \"%s\" for cake \"%s\" - \"%s\" instead of \"%s\"\n", newIngr.Name, old.Name, newIngr.Unit, oldIngr.Unit)
 					}
-				} else if new_ingr.Count != old_ingr.Count {
-					comp += fmt.Sprintf("CHANGED unit count for ingredient \"%s\" for cake \"%s\" - \"%s\" instead of \"%s\"\n", new_ingr.Name, old.Name, new_ingr.Count, old_ingr.Count)
+				} else if newIngr.Count != oldIngr.Count {
+					comp += fmt.Sprintf("CHANGED unit count for ingredient \"%s\" for cake \"%s\" - \"%s\" instead of \"%s\"\n", newIngr.Name, old.Name, newIngr.Count, oldIngr.Count)
 				}
 			}
 		}
@@ -124,40 +124,40 @@ func changedUnit(old recipes.Cake, new recipes.Cake) (comp string) {
 }
 
 func addedIngredients(old recipes.Cake, new recipes.Cake) (comp string) {
-	added_ingr := 0
+	addedIngr := 0
 
-	for _, new_ingr := range new.Ingredients {
-		for _, old_ingr := range old.Ingredients {
-			if new_ingr.Name != old_ingr.Name {
-				added_ingr++
+	for _, newIngr := range new.Ingredients {
+		for _, oldIngr := range old.Ingredients {
+			if newIngr.Name != oldIngr.Name {
+				addedIngr++
 			}
 		}
 
-		if added_ingr == len(new.Ingredients) {
-			comp += fmt.Sprintf("ADDED ingredient \"%s\" for cake \"%s\"\n", new_ingr.Name, old.Name)
+		if addedIngr == len(new.Ingredients) {
+			comp += fmt.Sprintf("ADDED ingredient \"%s\" for cake \"%s\"\n", newIngr.Name, old.Name)
 		}
 
-		added_ingr = 0
+		addedIngr = 0
 	}
 
 	return comp
 }
 
 func removedIngredients(old recipes.Cake, new recipes.Cake) (comp string) {
-	remove_ingr := 0
+	removeIngr := 0
 
-	for _, old_ingr := range old.Ingredients {
-		for _, new_ingr := range new.Ingredients {
-			if old_ingr.Name != new_ingr.Name {
-				remove_ingr++
+	for _, oldIngr := range old.Ingredients {
+		for _, newIngr := range new.Ingredients {
+			if oldIngr.Name != newIngr.Name {
+				removeIngr++
 			}
 		}
 
-		if remove_ingr == len(old.Ingredients) {
-			comp += fmt.Sprintf("REMOVED ingredient \"%s\" for cake \"%s\"\n", old_ingr.Name, old.Name)
+		if removeIngr == len(old.Ingredients) {
+			comp += fmt.Sprintf("REMOVED ingredient \"%s\" for cake \"%s\"\n", oldIngr.Name, old.Name)
 		}
 
-		remove_ingr = 0
+		removeIngr = 0
 	}
 
 	return comp

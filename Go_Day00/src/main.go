@@ -17,7 +17,7 @@ type Flags struct {
 
 func main() {
 	flags := readFlags()
-	massive := data.GetData()
+	massive := data.NumberData()
 
 	outResults(massive, &flags)
 }
@@ -42,19 +42,19 @@ func outResults(massive []int, flags *Flags) {
 
 	if len(massive) > 0 {
 		if flags.Mean {
-			fmt.Printf("Mean: %.2f\n", anscombe.GetMean(massive))
+			fmt.Printf("Mean: %.2f\n", anscombe.Mean(massive))
 		}
 
 		if flags.Median {
-			fmt.Printf("Median: %.2f\n", anscombe.GetMedian(massive))
+			fmt.Printf("Median: %.2f\n", anscombe.Median(massive))
 		}
 
 		if flags.Mode {
-			fmt.Printf("Mode: %.2f\n", anscombe.GetMode(massive))
+			fmt.Printf("Mode: %.2f\n", anscombe.Mode(massive))
 		}
 
 		if flags.StdDev {
-			fmt.Printf("SD: %.2f\n", anscombe.GetDeviation(massive))
+			fmt.Printf("SD: %.2f\n", anscombe.Deviation(massive))
 		}
 	}
 }

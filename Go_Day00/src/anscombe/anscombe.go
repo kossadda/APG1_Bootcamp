@@ -2,7 +2,7 @@ package anscombe
 
 import "math"
 
-func GetMean(massive []int) (mean float64) {
+func Mean(massive []int) (mean float64) {
 	for _, num := range massive {
 		mean += float64(num)
 	}
@@ -10,7 +10,7 @@ func GetMean(massive []int) (mean float64) {
 	return mean / float64(len(massive))
 }
 
-func GetMedian(massive []int) (median float64) {
+func Median(massive []int) (median float64) {
 	length := len(massive)
 
 	if length%2 == 0 {
@@ -22,36 +22,36 @@ func GetMedian(massive []int) (median float64) {
 	return median
 }
 
-func GetMode(massive []int) (mode float64) {
-	repeat_max := 0
-	repeat_cnt := 0
+func Mode(massive []int) (mode float64) {
+	repeatMax := 0
+	repeatCnt := 0
 	prev := massive[0]
 	mode = float64(massive[0])
 
 	for i, value := range massive {
 		if i > 0 && value == prev {
-			repeat_cnt++
+			repeatCnt++
 		} else {
-			if repeat_cnt > repeat_max {
-				repeat_max = repeat_cnt
+			if repeatCnt > repeatMax {
+				repeatMax = repeatCnt
 				mode = float64(prev)
 			}
 
-			repeat_cnt = 0
+			repeatCnt = 0
 		}
 
 		prev = value
 	}
 
-	if repeat_cnt > repeat_max {
+	if repeatCnt > repeatMax {
 		mode = float64(massive[len(massive)-1])
 	}
 
 	return mode
 }
 
-func GetDeviation(massive []int) (stddev float64) {
-	mean := GetMean(massive)
+func Deviation(massive []int) (stddev float64) {
+	mean := Mean(massive)
 
 	for _, value := range massive {
 		stddev += math.Pow(float64(value)-mean, 2)

@@ -22,6 +22,7 @@ build_ex02:
 clean:
 	rm -f $(EXE00)
 	rm -f $(EXE01)
+	rm -f $(EXE02)
 
 fmt:
 	$(GO) fmt ./...
