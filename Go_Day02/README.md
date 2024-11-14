@@ -13,13 +13,13 @@
 3. [Chapter III](#chapter-iii) \
     3.1. [Intro](#intro)
 4. [Chapter IV](#chapter-iv) \
-    4.1. [Exercise 00: Finding Things](#exercise-00-finding-things)
+    4.1. [Exercise 00: Finding Things](#ex00)
 5. [Chapter V](#chapter-v) \
-    5.1. [Exercise 01: Counting Things](#exercise-01-counting-things)
+    5.1. [Exercise 01: Counting Things](#ex01)
 6. [Chapter VI](#chapter-vi) \
-    6.1. [Exercise 02: Running Things](#exercise-02-running-things)
+    6.1. [Exercise 02: Running Things](#ex02)
 7. [Chapter VII](#chapter-vii) \
-    7.1. [Exercise 03: Archiving Things](#exercise-03-archiving-things)
+    7.1. [Exercise 03: Archiving Things](#ex03)
 
 
 <h2 id="chapter-i" >Chapter I</h2>
