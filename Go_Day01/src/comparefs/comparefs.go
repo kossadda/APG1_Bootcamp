@@ -5,10 +5,7 @@ import (
 	"strings"
 )
 
-func Compare(first string, second string) {
-	base1 := MapBase(first)
-	base2 := MapBase(second)
-
+func Compare(base1, base2 map[string]bool) {
 	for path := range base2 {
 		if !base1[path] {
 			fmt.Printf("ADDED %s\n", path)
@@ -22,10 +19,10 @@ func Compare(first string, second string) {
 	}
 }
 
-func MapBase(base string) map[string]bool {
+func MapBase(base []byte) map[string]bool {
 	mapBase := make(map[string]bool)
 
-	lines := strings.Split(base, "\n")
+	lines := strings.Split(string(base), "\n")
 	for _, line := range lines {
 		if line != "" {
 			mapBase[line] = true

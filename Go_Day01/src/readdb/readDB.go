@@ -15,36 +15,35 @@ type DBReader interface {
 
 func DefineFile(reader *DBReader, filename string) ([]byte, error) {
 	file, err := pathRead(filename)
+	if err != nil {
+		return nil, err
+	}
 
 	ext := fileExtension(filename)
-	if err == nil {
-		if reader != nil {
-			if ext == "xml" {
-				*reader = &encode.RecipesXML{}
-			} else if ext == "json" {
-				*reader = &encode.RecipesJSON{}
-			} else {
-				err = fmt.Errorf("'%s' is wrong file extension (required 'json' or 'xml')", ext)
-			}
+	if reader != nil {
+		if ext == "xml" {
+			*reader = &encode.RecipesXML{}
+		} else if ext == "json" {
+			*reader = &encode.RecipesJSON{}
 		} else {
-			if ext != "txt" {
-				err = fmt.Errorf("'%s' is wrong file extension (required 'txt')", ext)
-			}
+			return nil, fmt.Errorf("'%s' is wrong file extension (required 'json' or 'xml')", ext)
 		}
 	}
 
-	return file, err
+	return file, nil
 }
 
-func pathRead(path string) (file []byte, err error) {
+func pathRead(path string) ([]byte, error) {
 	if path == "" {
-		err = fmt.Errorf("please provide a filename using the flag (look at flag list with -h)")
-		return
+		return nil, fmt.Errorf("please provide a filename using the flag (look at flag list with -h)")
 	}
 
-	file, err = os.ReadFile(path)
+	file, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read file: %w", err)
+	}
 
-	return file, err
+	return file, nil
 }
 
 func fileExtension(path string) string {

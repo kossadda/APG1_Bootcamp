@@ -14,19 +14,31 @@ func main() {
 	snapshot2 := flag.String("new", "", "New filesystem (txt)")
 	flag.Parse()
 
-	file1 := Snapshot(*snapshot1)
-	file2 := Snapshot(*snapshot2)
+	if *snapshot1 == "" || *snapshot2 == "" {
+		fmt.Fprintln(os.Stderr, "Please provide both old and new filesystem snapshots.")
+		os.Exit(1)
+	}
 
-	comparefs.Compare(string(file1), string(file2))
-}
-
-func Snapshot(path string) []byte {
-	file, err := readdb.DefineFile(nil, path)
-
+	base1, err := Snapshot(*snapshot1)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
 	}
 
-	return file
+	base2, err := Snapshot(*snapshot2)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		os.Exit(1)
+	}
+
+	comparefs.Compare(base1, base2)
+}
+
+func Snapshot(path string) (map[string]bool, error) {
+	file, err := readdb.DefineFile(nil, path)
+	if err != nil {
+		return nil, err
+	}
+
+	return comparefs.MapBase(file), nil
 }
