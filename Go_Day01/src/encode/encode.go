@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
 	"os"
+
+	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
 )
 
 type RecipesXML struct{}

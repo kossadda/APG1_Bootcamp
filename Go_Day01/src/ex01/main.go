@@ -3,10 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
+
 	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/comparedb"
 	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/readdb"
 	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
-	"os"
 )
 
 func main() {
@@ -14,10 +15,10 @@ func main() {
 	newPath := flag.String("new", "", "Stolen database (xml or json)")
 	flag.Parse()
 
-	comparedb.Compare(getRecipe(oldPath), getRecipe(newPath))
+	comparedb.Compare(Recipe(*oldPath), Recipe(*newPath))
 }
 
-func getRecipe(path *string) (rec recipes.Recipes) {
+func Recipe(path string) (rec recipes.Recipes) {
 	var reader readdb.DBReader
 	newFile, err := readdb.DefineFile(&reader, path)
 

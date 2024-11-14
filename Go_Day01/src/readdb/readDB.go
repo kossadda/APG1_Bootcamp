@@ -2,9 +2,10 @@ package readdb
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/encode"
 	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
-	"os"
 )
 
 type DBReader interface {
@@ -12,34 +13,38 @@ type DBReader interface {
 	Print(recipes recipes.Recipes)
 }
 
-func DefineFile(reader *DBReader, filename *string) (file []byte, err error) {
-	file, ext, err := pathRead(filename)
+func DefineFile(reader *DBReader, filename string) ([]byte, error) {
+	file, err := pathRead(filename)
+
+	ext := fileExtension(filename)
 	if err == nil {
-		if ext == "xml" {
-			*reader = &encode.RecipesXML{}
+		if reader != nil {
+			if ext == "xml" {
+				*reader = &encode.RecipesXML{}
+			} else if ext == "json" {
+				*reader = &encode.RecipesJSON{}
+			} else {
+				err = fmt.Errorf("'%s' is wrong file extension (required 'json' or 'xml')", ext)
+			}
 		} else {
-			*reader = &encode.RecipesJSON{}
+			if ext != "txt" {
+				err = fmt.Errorf("'%s' is wrong file extension (required 'txt')", ext)
+			}
 		}
 	}
 
 	return file, err
 }
 
-func pathRead(path *string) (file []byte, ext string, err error) {
-	if *path == "" {
-		err = fmt.Errorf("please provide a filename using the -f flag")
+func pathRead(path string) (file []byte, err error) {
+	if path == "" {
+		err = fmt.Errorf("please provide a filename using the flag (look at flag list with -h)")
 		return
 	}
 
-	ext = fileExtension(*path)
-	if ext != "json" && ext != "xml" {
-		err = fmt.Errorf("file extension must be 'json' or 'xml'")
-		return
-	}
+	file, err = os.ReadFile(path)
 
-	file, err = os.ReadFile(*path)
-
-	return file, ext, err
+	return file, err
 }
 
 func fileExtension(path string) string {
