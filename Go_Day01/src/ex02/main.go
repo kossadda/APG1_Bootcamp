@@ -1,3 +1,4 @@
+// Package main is the entry point for the application.
 package main
 
 import (
@@ -10,8 +11,8 @@ import (
 )
 
 func main() {
-	snapshot1 := flag.String("old", "", "Old filesystem (txt)")
-	snapshot2 := flag.String("new", "", "New filesystem (txt)")
+	snapshot1 := flag.String("old", "", "Old filesystem base")
+	snapshot2 := flag.String("new", "", "New filesystem base")
 	flag.Parse()
 
 	if *snapshot1 == "" || *snapshot2 == "" {
@@ -34,6 +35,7 @@ func main() {
 	comparefs.Compare(base1, base2)
 }
 
+// Snapshot reads the filesystem snapshot from the given file path.
 func Snapshot(path string) (map[string]bool, error) {
 	file, err := readdb.DefineFile(nil, path)
 	if err != nil {

@@ -1,3 +1,4 @@
+// Package data provides functions for reading and processing input data.
 package data
 
 import (
@@ -9,10 +10,11 @@ import (
 )
 
 const (
-	MinValue = -100000
-	MaxValue = 100000
+	MinValue = -100000 // Minimum value for input numbers
+	MaxValue = 100000  // Maximum value for input numbers
 )
 
+// NumberData reads a sequence of numbers from standard input and returns them as a slice of integers.
 func NumberData() (numbers []int) {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -44,6 +46,7 @@ func NumberData() (numbers []int) {
 	return numbers
 }
 
+// convertValue converts a string input to an integer.
 func convertValue(input string) (result int, err error) {
 	input = input[:len(input)-1]
 

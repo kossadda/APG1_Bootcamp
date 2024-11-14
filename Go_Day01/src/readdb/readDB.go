@@ -1,3 +1,4 @@
+// Package readdb provides functions for reading and processing database files.
 package readdb
 
 import (
@@ -8,11 +9,13 @@ import (
 	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
 )
 
+// DBReader is an interface for reading database files.
 type DBReader interface {
 	Read(file []byte) (recipes.Recipes, error)
 	Print(recipes recipes.Recipes)
 }
 
+// DefineFile determines the file type and returns the appropriate DBReader implementation.
 func DefineFile(reader *DBReader, filename string) ([]byte, error) {
 	file, err := pathRead(filename)
 	if err != nil {
@@ -33,6 +36,7 @@ func DefineFile(reader *DBReader, filename string) ([]byte, error) {
 	return file, nil
 }
 
+// pathRead reads the file from the given path.
 func pathRead(path string) ([]byte, error) {
 	if path == "" {
 		return nil, fmt.Errorf("please provide a filename using the flag (look at flag list with -h)")
@@ -46,6 +50,7 @@ func pathRead(path string) ([]byte, error) {
 	return file, nil
 }
 
+// fileExtension returns the file extension of the given filename.
 func fileExtension(path string) string {
 	for i := len(path) - 1; i >= 0; i-- {
 		if path[i] == '.' {

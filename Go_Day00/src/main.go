@@ -1,18 +1,21 @@
+// Package main is the entry point for the application.
 package main
 
 import (
 	"flag"
 	"fmt"
+	"sort"
+
 	"github.com/kossadda/APG1_Bootcamp/Go_Day00/src/anscombe"
 	"github.com/kossadda/APG1_Bootcamp/Go_Day00/src/data"
-	"sort"
 )
 
+// Flags represents the command-line flags for the program.
 type Flags struct {
-	Mean   bool
-	Median bool
-	Mode   bool
-	StdDev bool
+	Mean   bool // Flag to enable/disable mean calculation
+	Median bool // Flag to enable/disable median calculation
+	Mode   bool // Flag to enable/disable mode calculation
+	StdDev bool // Flag to enable/disable standard deviation calculation
 }
 
 func main() {
@@ -22,19 +25,21 @@ func main() {
 	outResults(massive, &flags)
 }
 
+// readFlags reads the command-line flags and returns a Flags struct.
 func readFlags() Flags {
 	var flags Flags
 
 	flag.BoolVar(&flags.Mean, "mean", true, "Mean value")
 	flag.BoolVar(&flags.Median, "median", true, "Median value")
 	flag.BoolVar(&flags.Mode, "mode", true, "Mode value")
-	flag.BoolVar(&flags.StdDev, "stddev", true, "Standart deviation value")
+	flag.BoolVar(&flags.StdDev, "stddev", true, "Standard deviation value")
 
 	flag.Parse()
 
 	return flags
 }
 
+// outResults prints the statistical results based on the provided flags.
 func outResults(massive []int, flags *Flags) {
 	fmt.Printf("\nSequence of numbers: %v\n", massive)
 

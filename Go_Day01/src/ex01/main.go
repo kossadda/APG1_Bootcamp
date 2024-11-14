@@ -1,3 +1,4 @@
+// Package main is the entry point for the application.
 package main
 
 import (
@@ -18,6 +19,7 @@ func main() {
 	comparedb.Compare(Recipe(*oldPath), Recipe(*newPath))
 }
 
+// Recipe reads the recipe data from the given file path.
 func Recipe(path string) (rec recipes.Recipes) {
 	var reader readdb.DBReader
 	newFile, err := readdb.DefineFile(&reader, path)

@@ -1,3 +1,4 @@
+// Package comparefs provides functions for comparing filesystem snapshots.
 package comparefs
 
 import (
@@ -5,6 +6,7 @@ import (
 	"strings"
 )
 
+// Compare compares two filesystem snapshots and prints the differences.
 func Compare(base1, base2 map[string]bool) {
 	for path := range base2 {
 		if !base1[path] {
@@ -19,6 +21,7 @@ func Compare(base1, base2 map[string]bool) {
 	}
 }
 
+// MapBase creates a map of file paths from the given filesystem snapshot.
 func MapBase(base []byte) map[string]bool {
 	mapBase := make(map[string]bool)
 

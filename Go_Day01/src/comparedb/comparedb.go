@@ -1,3 +1,4 @@
+// Package comparedb provides functions for comparing recipe databases.
 package comparedb
 
 import (
@@ -6,6 +7,7 @@ import (
 	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
 )
 
+// Compare compares two recipe databases and prints the differences.
 func Compare(old recipes.Recipes, new recipes.Recipes) {
 	fmt.Print(compareCakes(old, new))
 	fmt.Print(compareTimes(old, new))
@@ -13,6 +15,7 @@ func Compare(old recipes.Recipes, new recipes.Recipes) {
 	fmt.Print(compareUnits(old, new))
 }
 
+// compareCakes compares the cakes in two recipe databases.
 func compareCakes(old recipes.Recipes, new recipes.Recipes) (comp string) {
 	oldCakes := make(map[string]bool)
 	newCakes := make(map[string]bool)
@@ -40,6 +43,7 @@ func compareCakes(old recipes.Recipes, new recipes.Recipes) (comp string) {
 	return comp
 }
 
+// compareTimes compares the cooking times of cakes in two recipe databases.
 func compareTimes(old recipes.Recipes, new recipes.Recipes) (comp string) {
 	oldCakes := make(map[string]string)
 	newCakes := make(map[string]string)
@@ -61,6 +65,7 @@ func compareTimes(old recipes.Recipes, new recipes.Recipes) (comp string) {
 	return comp
 }
 
+// compareIngredients compares the ingredients of cakes in two recipe databases.
 func compareIngredients(old recipes.Recipes, new recipes.Recipes) (comp string) {
 	oldCakes := make(map[string]recipes.Cake)
 	newCakes := make(map[string]recipes.Cake)
@@ -83,6 +88,7 @@ func compareIngredients(old recipes.Recipes, new recipes.Recipes) (comp string) 
 	return comp
 }
 
+// compareUnits compares the units of ingredients in two recipe databases.
 func compareUnits(old recipes.Recipes, new recipes.Recipes) (comp string) {
 	oldCakes := make(map[string]recipes.Cake)
 	newCakes := make(map[string]recipes.Cake)
@@ -104,6 +110,7 @@ func compareUnits(old recipes.Recipes, new recipes.Recipes) (comp string) {
 	return comp
 }
 
+// changedUnit compares the units of ingredients in two cakes.
 func changedUnit(old recipes.Cake, new recipes.Cake) (comp string) {
 	for _, newIngr := range new.Ingredients {
 		for _, oldIngr := range old.Ingredients {
@@ -124,6 +131,7 @@ func changedUnit(old recipes.Cake, new recipes.Cake) (comp string) {
 	return comp
 }
 
+// addedIngredients finds and returns the added ingredients in the new cake.
 func addedIngredients(old recipes.Cake, new recipes.Cake) (comp string) {
 	addedIngr := 0
 
@@ -144,6 +152,7 @@ func addedIngredients(old recipes.Cake, new recipes.Cake) (comp string) {
 	return comp
 }
 
+// removedIngredients finds and returns the removed ingredients in the old cake.
 func removedIngredients(old recipes.Cake, new recipes.Cake) (comp string) {
 	removeIngr := 0
 
