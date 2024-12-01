@@ -4,7 +4,7 @@ package comparedb
 import (
 	"fmt"
 
-	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
+	"github.com/kossadda/APG1_Bootcamp/pkg/recipes"
 )
 
 // Compare compares two recipe databases and prints the differences.

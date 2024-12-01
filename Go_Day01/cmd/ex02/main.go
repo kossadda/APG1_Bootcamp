@@ -4,10 +4,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
+	"log"
 
-	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/comparefs"
-	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/readdb"
+	"github.com/kossadda/APG1_Bootcamp/pkg/comparefs"
+	"github.com/kossadda/APG1_Bootcamp/pkg/readdb"
 )
 
 func main() {
@@ -16,20 +16,20 @@ func main() {
 	flag.Parse()
 
 	if *snapshot1 == "" || *snapshot2 == "" {
-		fmt.Fprintln(os.Stderr, "Please provide both old and new filesystem snapshots.")
-		os.Exit(1)
+		log.Fatal(fmt.Errorf("please provide both old and new filesystem snapshots"))
+		return
 	}
 
 	base1, err := Snapshot(*snapshot1)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error:", err)
-		os.Exit(1)
+		log.Fatal(err)
+		return
 	}
 
 	base2, err := Snapshot(*snapshot2)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error:", err)
-		os.Exit(1)
+		log.Fatal(err)
+		return
 	}
 
 	comparefs.Compare(base1, base2)

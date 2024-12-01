@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/encode"
-	"github.com/kossadda/APG1_Bootcamp/Go_Day01/src/recipes"
+	"github.com/kossadda/APG1_Bootcamp/pkg/encode"
+	"github.com/kossadda/APG1_Bootcamp/pkg/recipes"
 )
 
 // DBReader is an interface for reading database files.
 type DBReader interface {
-	Read(file []byte) (recipes.Recipes, error)
-	Print(recipes recipes.Recipes)
+	DBRead(file []byte) error
+	Recipe() recipes.Recipes
 }
 
 // DefineFile determines the file type and returns the appropriate DBReader implementation.
