@@ -1,3 +1,7 @@
+// Copyright 2024 Gabilov Pervin. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 // Package data provides functions for reading and processing input data.
 package data
 
@@ -46,7 +50,6 @@ func NumberData() (numbers []int) {
 	return numbers
 }
 
-// convertValue converts a string input to an integer.
 func convertValue(input string) (result int, err error) {
 	input = input[:len(input)-1]
 

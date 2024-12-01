@@ -1,3 +1,7 @@
+// Copyright 2024 Gabilov Pervin. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 // Package anscombe provides functions for calculating statistical metrics.
 package anscombe
 
@@ -5,6 +9,10 @@ import "math"
 
 // Mean calculates the mean of a slice of integers.
 func Mean(massive []int) (mean float64) {
+	if len(massive) == 0 {
+		return 0.0
+	}
+
 	for _, num := range massive {
 		mean += float64(num)
 	}
@@ -15,6 +23,9 @@ func Mean(massive []int) (mean float64) {
 // Median calculates the median of a sorted slice of integers.
 func Median(massive []int) (median float64) {
 	length := len(massive)
+	if length == 0 {
+		return 0.0
+	}
 
 	if length%2 == 0 {
 		median = float64(massive[length/2-1]+massive[length/2]) / 2
@@ -27,6 +38,10 @@ func Median(massive []int) (median float64) {
 
 // Mode calculates the mode of a slice of integers.
 func Mode(massive []int) (mode float64) {
+	if len(massive) == 0 {
+		return 0.0
+	}
+
 	repeatMax := 0
 	repeatCnt := 0
 	prev := massive[0]
@@ -56,6 +71,10 @@ func Mode(massive []int) (mode float64) {
 
 // Deviation calculates the standard deviation of a slice of integers.
 func Deviation(massive []int) (stddev float64) {
+	if len(massive) == 0 {
+		return 0.0
+	}
+
 	mean := Mean(massive)
 
 	for _, value := range massive {
