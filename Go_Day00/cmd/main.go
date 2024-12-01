@@ -4,10 +4,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/kossadda/APG1_Bootcamp/pkg/anscombe"
+	"github.com/kossadda/APG1_Bootcamp/pkg/data"
 	"sort"
-
-	"github.com/kossadda/APG1_Bootcamp/Go_Day00/src/anscombe"
-	"github.com/kossadda/APG1_Bootcamp/Go_Day00/src/data"
 )
 
 // Flags represents the command-line flags for the program.

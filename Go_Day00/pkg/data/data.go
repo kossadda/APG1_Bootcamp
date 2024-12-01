@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	MinValue = -100000 // Minimum value for input numbers
-	MaxValue = 100000  // Maximum value for input numbers
+	minValue = -100000 // Minimum value for input numbers
+	maxValue = 100000  // Maximum value for input numbers
 )
 
 // NumberData reads a sequence of numbers from standard input and returns them as a slice of integers.
@@ -33,7 +33,7 @@ func NumberData() (numbers []int) {
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Error when entering a number:", err)
 		} else {
-			if value >= MinValue && value <= MaxValue {
+			if value >= minValue && value <= maxValue {
 				numbers = append(numbers, value)
 			} else {
 				err := fmt.Errorf("number must be in the range [-100000:100000]")
