@@ -9,7 +9,7 @@ import (
 	"github.com/kossadda/APG1_Bootcamp/pkg/param"
 )
 
-func Start(prm *param.Param) error {
+func Scan(prm *param.Param) error {
 	info, err := os.Stat(prm.Path)
 	if err != nil {
 		return fmt.Errorf("directory %s does not exist", prm.Path)
@@ -17,34 +17,17 @@ func Start(prm *param.Param) error {
 		return fmt.Errorf("%s is not a directory", prm.Path)
 	}
 
-	if prm.IsSetD() {
-		fmt.Println(prm.Path)
-	}
 	return filepath.WalkDir(prm.Path, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
+		if err != nil && path == prm.Path {
+			return nil
 		}
 
-		info, err = d.Info()
-		if err != nil {
-			return err
-		}
-
-		if prm.IsNoFlags() {
-			printSymlink(info, path)
-			printDir(info, path)
-			printFile(info, path)
-		} else {
-			if prm.IsSetSl() {
-				printSymlink(info, path)
-			}
-			if prm.IsSetD() {
-				printDir(info, path)
-			}
-			if prm.IsSetExt() {
-				printFileWithExt(info, path, prm.Ext)
+		res := item(*prm, path, d)
+		if res != "" {
+			if filepath.IsAbs(path) {
+				fmt.Println(res)
 			} else {
-				printFile(info, path)
+				fmt.Println("./" + res)
 			}
 		}
 
@@ -52,44 +35,39 @@ func Start(prm *param.Param) error {
 	})
 }
 
-func printFileWithExt(info fs.FileInfo, path, ext string) {
-	if info.Mode()&os.ModeDir == 0 && info.Mode()&os.ModeSymlink == 0 && filepath.Ext(path) == ext {
-		if !filepath.IsAbs(path) {
-			fmt.Print("./")
-		}
-		fmt.Println(path)
+func item(p param.Param, path string, d fs.DirEntry) string {
+	if p.IsSetF() && fileFilter(p, path, d) {
+		return path
 	}
-}
-
-func printFile(info fs.FileInfo, path string) {
-	if info.Mode()&os.ModeDir == 0 && info.Mode()&os.ModeSymlink == 0 {
-		if !filepath.IsAbs(path) {
-			fmt.Print("./")
-		}
-		fmt.Println(path)
+	if p.IsSetD() && folderFilter(d) {
+		return path
 	}
-}
-
-func printDir(info fs.FileInfo, path string) {
-	if info.Mode()&os.ModeDir != 0 {
-		if !filepath.IsAbs(path) {
-			fmt.Print("./")
-		}
-		fmt.Println(path)
-	}
-}
-
-func printSymlink(info fs.FileInfo, path string) {
-	if info.Mode()&os.ModeSymlink != 0 {
-		if !filepath.IsAbs(path) {
-			fmt.Print("./")
-		}
-
+	if p.IsSetSl() && symlinkFilter(d) {
 		realPath, err := filepath.EvalSymlinks(path)
 		if err != nil {
-			fmt.Println(path, "-> [broken]")
+			return path + " -> [broken]"
 		} else {
-			fmt.Println(path, "->", realPath)
+			return path + " -> " + realPath
 		}
 	}
+
+	return ""
+}
+
+func fileFilter(p param.Param, path string, d fs.DirEntry) bool {
+	if d.Type().IsRegular() {
+		if p.IsSetExt() {
+			return filepath.Ext(path) == p.Ext
+		}
+		return true
+	}
+	return false
+}
+
+func folderFilter(d fs.DirEntry) bool {
+	return d.IsDir()
+}
+
+func symlinkFilter(d fs.DirEntry) bool {
+	return d.Type()&os.ModeSymlink != 0
 }

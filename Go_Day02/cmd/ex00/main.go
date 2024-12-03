@@ -15,7 +15,7 @@ func main() {
 		return
 	}
 
-	err = find.Start(prm)
+	err = find.Scan(prm)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
