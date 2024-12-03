@@ -8,7 +8,9 @@ import (
 )
 
 func main() {
-	prm, err := param.New()
+	args := []string{"-f", "-ext", "", "/home"}
+
+	prm, err := param.New("test", args)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
