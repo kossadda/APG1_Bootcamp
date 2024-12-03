@@ -57,7 +57,7 @@ func TestNew(t *testing.T) {
 		{
 			name: "no flags with path",
 			args: []string{"/home"},
-			exp:  Param{Path: "/home"},
+			exp:  Param{Path: "/home", flags: fMask | dMask | slMask},
 			err:  nil,
 		},
 		{
@@ -88,7 +88,7 @@ func TestNew(t *testing.T) {
 				return
 			}
 			if *got != tt.exp {
-				t.Errorf("New() = %v, want %v", got, tt.exp)
+				t.Errorf("New() = %v, want %v", *got, tt.exp)
 			}
 		})
 	}

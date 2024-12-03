@@ -19,10 +19,6 @@ type Param struct {
 	flags int8
 }
 
-func (p *Param) IsNoFlags() bool {
-	return p.flags == 0
-}
-
 func (p *Param) IsSetSl() bool {
 	return p.flags&slMask != 0
 }
@@ -101,6 +97,9 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 	}
 
 	p.Path = fs.Args()[0]
+	if p.flags == 0 {
+		p.flags = dMask | fMask | slMask
+	}
 
 	return &p, nil
 }
