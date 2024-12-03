@@ -2,24 +2,21 @@ package main
 
 import (
 	"fmt"
+	"github.com/kossadda/APG1_Bootcamp/pkg/find"
 	"os"
 
 	"github.com/kossadda/APG1_Bootcamp/pkg/param"
 )
 
 func main() {
-	args := []string{"-f", "-ext", "", "/home"}
-
-	prm, err := param.New("test", args)
+	prm, err := param.New("test", os.Args[1:])
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
 	}
 
-	fmt.Println(prm)
-
-	fmt.Println(prm.IsSetSl())
-	fmt.Println(prm.IsSetD())
-	fmt.Println(prm.IsSetF())
-	fmt.Println(prm.IsSetExt())
+	err = find.Start(prm)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
 }

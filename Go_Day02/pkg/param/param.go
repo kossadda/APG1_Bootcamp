@@ -19,6 +19,10 @@ type Param struct {
 	flags int8
 }
 
+func (p *Param) IsNoFlags() bool {
+	return p.flags == 0
+}
+
 func (p *Param) IsSetSl() bool {
 	return p.flags&slMask != 0
 }
@@ -35,7 +39,7 @@ func (p *Param) IsSetExt() bool {
 	return p.flags&extMask != 0
 }
 
-func New(setName string, args []string) (Param, error) {
+func New(setName string, args []string) (*Param, error) {
 	fs := flag.NewFlagSet(setName, flag.ContinueOnError)
 
 	sl := fs.Bool("sl", false, "Set search pattern: symbolic link")
@@ -52,13 +56,13 @@ func New(setName string, args []string) (Param, error) {
 
 	err := fs.Parse(args)
 	if err != nil {
-		return Param{}, err
+		return &Param{}, err
 	}
 
 	return parseFlags(fs, *sl, *d, *f, *ext)
 }
 
-func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (Param, error) {
+func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 	var p Param
 
 	if sl {
@@ -73,15 +77,15 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (Param, error) {
 
 	if ext != "" {
 		if !f {
-			return Param{}, fmt.Errorf("flag -ext provided but -f is not used")
+			return &Param{}, fmt.Errorf("flag -ext provided but -f is not used")
 		}
 
 		p.flags |= extMask
-		p.Ext = ext
+		p.Ext = "." + ext
 	}
 
 	if len(fs.Args()) != 1 {
-		return Param{}, fmt.Errorf("provide one path argument at the end")
+		return &Param{}, fmt.Errorf("provide one path argument at the end")
 	}
 
 	if func() bool {
@@ -93,10 +97,10 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (Param, error) {
 		})
 		return extUsed
 	}() && ext == "" {
-		return Param{}, fmt.Errorf("flag -ext provided but extension is empty")
+		return &Param{}, fmt.Errorf("flag -ext provided but extension is empty")
 	}
 
 	p.Path = fs.Args()[0]
 
-	return p, nil
+	return &p, nil
 }

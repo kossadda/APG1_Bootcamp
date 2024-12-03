@@ -33,7 +33,7 @@ func TestNew(t *testing.T) {
 		{
 			name: "use -f with -ext",
 			args: []string{"-f", "-ext", "txt", "/home"},
-			exp:  Param{Path: "/home", Ext: "txt", flags: fMask | extMask},
+			exp:  Param{Path: "/home", Ext: ".txt", flags: fMask | extMask},
 			err:  nil,
 		},
 		{
@@ -51,7 +51,7 @@ func TestNew(t *testing.T) {
 		{
 			name: "use multiple flags",
 			args: []string{"-sl", "-f", "-ext", "log", "/home"},
-			exp:  Param{Path: "/home", Ext: "log", flags: slMask | fMask | extMask},
+			exp:  Param{Path: "/home", Ext: ".log", flags: slMask | fMask | extMask},
 			err:  nil,
 		},
 		{
@@ -87,7 +87,7 @@ func TestNew(t *testing.T) {
 				t.Errorf("New() error = %v, wantErr %v", err, tt.err)
 				return
 			}
-			if got != tt.exp {
+			if *got != tt.exp {
 				t.Errorf("New() = %v, want %v", got, tt.exp)
 			}
 		})
