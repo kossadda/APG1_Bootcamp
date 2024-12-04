@@ -9,30 +9,38 @@ import (
 	"github.com/kossadda/APG1_Bootcamp/pkg/param"
 )
 
-func Scan(prm *param.Param) error {
-	info, err := os.Stat(prm.Path)
-	if err != nil {
-		return fmt.Errorf("directory %s does not exist", prm.Path)
-	} else if !info.IsDir() {
-		return fmt.Errorf("%s is not a directory", prm.Path)
-	}
+func Scan(prm *param.Param) ([]string, error) {
+	var sys []string
 
-	return filepath.WalkDir(prm.Path, func(path string, d fs.DirEntry, err error) error {
-		if err != nil && path == prm.Path {
+	err := filepath.WalkDir(prm.Path, func(path string, d fs.DirEntry, err error) error {
+		if err != nil || path == prm.Path {
+			if os.IsNotExist(err) {
+				fmt.Fprintf(os.Stderr, "%s: ‘%s’: No such file or directory\n", os.Args[0], prm.Path)
+			}
 			return nil
 		}
 
 		res := item(*prm, path, d)
 		if res != "" {
 			if filepath.IsAbs(path) {
-				fmt.Println(res)
+				sys = append(sys, res) // Добавляем результат в слайс sys
 			} else {
-				fmt.Println("./" + res)
+				if prm.Path[0:2] == "./" {
+					sys = append(sys, "./"+res)
+				} else {
+					sys = append(sys, res)
+				}
 			}
 		}
 
 		return nil
 	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return sys, nil
 }
 
 func item(p param.Param, path string, d fs.DirEntry) string {

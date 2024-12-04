@@ -15,8 +15,12 @@ func main() {
 		return
 	}
 
-	err = find.Scan(prm)
+	sys, err := find.Scan(prm)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
+	}
+
+	for i := range sys {
+		fmt.Println(sys[i])
 	}
 }
