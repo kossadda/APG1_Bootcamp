@@ -29,7 +29,7 @@ func Scan(prm *param.Param) ([]string, error) {
 		res := item(*prm, path, d)
 		if res != "" {
 			if filepath.IsAbs(path) {
-				sys = append(sys, res) // Добавляем результат в слайс sys
+				sys = append(sys, res)
 			} else {
 				if len(prm.Path) > 1 && prm.Path[0:2] == "./" {
 					sys = append(sys, "./"+res)
