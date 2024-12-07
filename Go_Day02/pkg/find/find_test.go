@@ -18,13 +18,13 @@ func TestScan(t *testing.T) {
 	}
 
 	expected := map[string]struct{}{
-		"../../test/foo/bar":                                {},
-		"../../test/foo/bar/baz":                            {},
-		"../../test/foo/bar/baz/deep":                       {},
-		"../../test/foo/bar/baz/deep/directory":             {},
-		"../../test/foo/bar/broken_sl -> [broken]":          {},
-		"../../test/foo/bar/buzz -> ../../test/foo/bar/baz": {},
-		"../../test/foo/bar/test.txt":                       {},
+		"../../test/foo/bar":                           {},
+		"../../test/foo/bar/broken_sl -> [broken]":     {},
+		"../../test/foo/bar/test.txt":                  {},
+		"../../test/foo/fou":                           {},
+		"../../test/foo/fou/bar -> ../../test/foo/bar": {},
+		"../../test/foo/fou/keep":                      {},
+		"../../test/foo/fou/keep/.gitkeep":             {},
 	}
 
 	for _, path := range sys {
@@ -57,13 +57,13 @@ func TestScanWithAbsolutePaths(t *testing.T) {
 	}
 
 	expected := map[string]struct{}{
-		absRoot + "/bar":                                 {},
-		absRoot + "/bar/baz":                             {},
-		absRoot + "/bar/baz/deep":                        {},
-		absRoot + "/bar/baz/deep/directory":              {},
-		absRoot + "/bar/broken_sl -> [broken]":           {},
-		absRoot + "/bar/buzz -> " + absRoot + "/bar/baz": {},
-		absRoot + "/bar/test.txt":                        {},
+		absRoot + "/bar":                            {},
+		absRoot + "/bar/broken_sl -> [broken]":      {},
+		absRoot + "/bar/test.txt":                   {},
+		absRoot + "/fou":                            {},
+		absRoot + "/fou/bar -> " + absRoot + "/bar": {},
+		absRoot + "/fou/keep":                       {},
+		absRoot + "/fou/keep/.gitkeep":              {},
 	}
 
 	for _, path := range sys {
@@ -108,7 +108,11 @@ func TestScanEmptyDirectory(t *testing.T) {
 }
 
 func TestScanFlexiblePaths(t *testing.T) {
-	root := "../../test/foo"
+	root, err := filepath.Abs("../../test/foo")
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	prm, err := param.New("test", []string{root})
 	if err != nil {
 		t.Fatal(err)
@@ -119,13 +123,13 @@ func TestScanFlexiblePaths(t *testing.T) {
 	}
 
 	expected := map[string]struct{}{
-		filepath.Clean("../../test/foo/bar"):                                {},
-		filepath.Clean("../../test/foo/bar/baz"):                            {},
-		filepath.Clean("../../test/foo/bar/baz/deep"):                       {},
-		filepath.Clean("../../test/foo/bar/baz/deep/directory"):             {},
-		filepath.Clean("../../test/foo/bar/broken_sl -> [broken]"):          {},
-		filepath.Clean("../../test/foo/bar/buzz -> ../../test/foo/bar/baz"): {},
-		filepath.Clean("../../test/foo/bar/test.txt"):                       {},
+		filepath.Join(root, "bar"):                                    {},
+		filepath.Join(root, "bar/broken_sl -> [broken]"):              {},
+		filepath.Join(root, "bar/test.txt"):                           {},
+		filepath.Join(root, "fou"):                                    {},
+		filepath.Join(root, "fou/bar -> "+filepath.Join(root, "bar")): {},
+		filepath.Join(root, "fou/keep"):                               {},
+		filepath.Join(root, "fou/keep/.gitkeep"):                      {},
 	}
 
 	for _, path := range sys {
