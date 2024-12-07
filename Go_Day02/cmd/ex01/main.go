@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/kossadda/APG1_Bootcamp/pkg/wc"
 	"os"
+
+	"github.com/kossadda/APG1_Bootcamp/pkg/wc"
 )
 
 func main() {
@@ -14,5 +15,9 @@ func main() {
 		return
 	}
 
-	wc.Output(args, w)
+	ch := wc.Output(args, w)
+
+	for str := range ch {
+		fmt.Println(str)
+	}
 }

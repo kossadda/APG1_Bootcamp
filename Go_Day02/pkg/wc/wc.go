@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"sync"
+	"unicode/utf8"
 )
 
 const (
@@ -40,7 +41,7 @@ func (wc WC) fileReader(filename string) string {
 		if wc&allMask == lMask {
 			cnt++
 		} else {
-			cnt += len(scanner.Text())
+			cnt += utf8.RuneCountInString(scanner.Text())
 		}
 	}
 
@@ -106,15 +107,23 @@ func validPaths(args []string) (string, bool) {
 	return "", true
 }
 
-func Output(args []string, w WC) {
-	wg := sync.WaitGroup{}
-	wg.Add(len(args))
-	for _, path := range args {
-		go func() {
-			defer wg.Done()
-			fmt.Println(w.FileInfo(path), path)
-		}()
-	}
+func Output(args []string, w WC) chan string {
+	ch := make(chan string)
 
-	wg.Wait()
+	go func() {
+		wg := sync.WaitGroup{}
+		wg.Add(len(args))
+
+		for _, path := range args {
+			go func() {
+				defer wg.Done()
+				ch <- fmt.Sprintf("%s\t%s", w.FileInfo(path), path)
+			}()
+		}
+
+		wg.Wait()
+		close(ch)
+	}()
+
+	return ch
 }
