@@ -1,10 +1,14 @@
+// This program provides the main logic for scanning a directory
+// based on various filters specified by command-line flags. The package
+// uses the 'param' package to parse flags and the 'find' package to scan
+// the directory. It then prints the results to the standard output.
 package main
 
 import (
 	"fmt"
-	"github.com/kossadda/APG1_Bootcamp/pkg/find"
 	"os"
 
+	"github.com/kossadda/APG1_Bootcamp/pkg/find"
 	"github.com/kossadda/APG1_Bootcamp/pkg/param"
 )
 

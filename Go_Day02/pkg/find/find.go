@@ -1,3 +1,6 @@
+// Package find provides functionality for scanning directories based on specific filters
+// such as file type, extension, directory, and symbolic links. The 'Scan' function walks
+// through a directory and applies these filters to the files and directories it encounters.
 package find
 
 import (
@@ -9,6 +12,9 @@ import (
 	"github.com/kossadda/APG1_Bootcamp/pkg/param"
 )
 
+// Scan walks through a directory (and its subdirectories) and filters items based on the provided
+// parameters. It returns a slice of strings containing the paths of the matching files, directories,
+// or symbolic links.
 func Scan(prm *param.Param) ([]string, error) {
 	var sys []string
 
@@ -43,6 +49,8 @@ func Scan(prm *param.Param) ([]string, error) {
 	return sys, nil
 }
 
+// item applies the necessary filters to each item in the directory
+// and returns the path of the item if it matches the filter criteria.
 func item(p param.Param, path string, d fs.DirEntry) string {
 	if p.IsSetF() && fileFilter(p, path, d) {
 		return path
@@ -62,6 +70,7 @@ func item(p param.Param, path string, d fs.DirEntry) string {
 	return ""
 }
 
+// fileFilter checks if the item is a regular file and matches the extension filter.
 func fileFilter(p param.Param, path string, d fs.DirEntry) bool {
 	if d.Type().IsRegular() {
 		if p.IsSetExt() {
@@ -72,10 +81,12 @@ func fileFilter(p param.Param, path string, d fs.DirEntry) bool {
 	return false
 }
 
+// folderFilter checks if the item is a directory.
 func folderFilter(d fs.DirEntry) bool {
 	return d.IsDir()
 }
 
+// symlinkFilter checks if the item is a symbolic link.
 func symlinkFilter(d fs.DirEntry) bool {
 	return d.Type()&os.ModeSymlink != 0
 }

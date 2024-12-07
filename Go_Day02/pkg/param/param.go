@@ -1,3 +1,6 @@
+// Package param provides functionality for parsing command-line flags.
+// It supports flags for filtering by file type (file, directory, symbolic link)
+// and file extensions.
 package param
 
 import (
@@ -7,34 +10,42 @@ import (
 )
 
 const (
-	slMask = 1 << iota
-	dMask
-	fMask
-	extMask
+	slMask  = 1 << iota // Bitmask for symbolic links filter
+	dMask               // Bitmask for directories filter
+	fMask               // Bitmask for files filter
+	extMask             // Bitmask for file extension filter
 )
 
+// Param holds the parsed parameters, including the path to scan, file extension, and selected filters.
 type Param struct {
-	Path  string
-	Ext   string
-	flags int8
+	Path  string // Path to the directory to scan
+	Ext   string // File extension to filter by (if -f flag is used)
+	flags int8   // Bitfield holding which flags are set
 }
 
+// IsSetSl checks if the symbolic link filter is set.
 func (p *Param) IsSetSl() bool {
 	return p.flags&slMask != 0
 }
 
+// IsSetD checks if the directory filter is set.
 func (p *Param) IsSetD() bool {
 	return p.flags&dMask != 0
 }
 
+// IsSetF checks if the file filter is set.
 func (p *Param) IsSetF() bool {
 	return p.flags&fMask != 0
 }
 
+// IsSetExt checks if the file extension filter is set.
 func (p *Param) IsSetExt() bool {
 	return p.flags&extMask != 0
 }
 
+// New parses the provided command-line arguments and returns a Param struct
+// containing the parsed filters and the directory path. It returns an error
+// if the flags are invalid or incomplete.
 func New(setName string, args []string) (*Param, error) {
 	fs := flag.NewFlagSet(setName, flag.ContinueOnError)
 
@@ -58,6 +69,7 @@ func New(setName string, args []string) (*Param, error) {
 	return parseFlags(fs, *sl, *d, *f, *ext)
 }
 
+// parseFlags processes the flags and sets the appropriate flags in the Param struct.
 func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 	var p Param
 
