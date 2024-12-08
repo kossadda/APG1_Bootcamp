@@ -55,7 +55,7 @@ func New(setName string, args []string) (*Param, error) {
 	ext := fs.String("ext", "", "Set search pattern: file extensions (use with -f)")
 
 	fs.Usage = func() {
-		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "Usage: %s [OPTION]... [FILE/DIR]\n", os.Args[0])
 		fs.VisitAll(func(f *flag.Flag) {
 			fmt.Fprintf(os.Stderr, "  -%s\t%s\n", f.Name, f.Usage)
 		})

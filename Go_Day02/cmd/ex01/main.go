@@ -1,3 +1,5 @@
+// This program implements a simple utility to count words, lines, or characters in a given text file.
+// It uses flags (-w, -l, -m) to determine the type of count and processes the files concurrently using goroutines.
 package main
 
 import (
@@ -11,7 +13,7 @@ func main() {
 	args := os.Args[1:]
 	w, err := wc.New("wc", &args)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprintln(os.Stderr, "Error:", err)
 		return
 	}
 
