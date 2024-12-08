@@ -8,20 +8,20 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kossadda/APG1_Bootcamp/pkg/find"
-	"github.com/kossadda/APG1_Bootcamp/pkg/param"
+	"github.com/kossadda/APG1_Bootcamp/pkg/find/find"
+	"github.com/kossadda/APG1_Bootcamp/pkg/find/param"
 )
 
 func main() {
 	prm, err := param.New("test", os.Args[1:])
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprintf(os.Stderr, "%s: %v\n", os.Args[0], err)
 		return
 	}
 
 	sys, err := find.Scan(prm)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprintf(os.Stderr, "%s: %v\n", os.Args[0], err)
 	}
 
 	for i := range sys {

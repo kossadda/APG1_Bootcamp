@@ -1,13 +1,14 @@
 package find
 
 import (
-	"github.com/kossadda/APG1_Bootcamp/pkg/param"
 	"path/filepath"
 	"testing"
+
+	"github.com/kossadda/APG1_Bootcamp/pkg/find/param"
 )
 
 func TestScan(t *testing.T) {
-	root := "../../test/foo"
+	root := "../../../test/foo"
 	prm, err := param.New("test", []string{root})
 	if err != nil {
 		t.Fatal(err)
@@ -18,13 +19,14 @@ func TestScan(t *testing.T) {
 	}
 
 	expected := map[string]struct{}{
-		"../../test/foo/bar":                           {},
-		"../../test/foo/bar/broken_sl -> [broken]":     {},
-		"../../test/foo/bar/test.txt":                  {},
-		"../../test/foo/fou":                           {},
-		"../../test/foo/fou/bar -> ../../test/foo/bar": {},
-		"../../test/foo/fou/keep":                      {},
-		"../../test/foo/fou/keep/.gitkeep":             {},
+		"../../../test/foo":                                  {},
+		"../../../test/foo/bar":                              {},
+		"../../../test/foo/bar/broken_sl -> [broken]":        {},
+		"../../../test/foo/bar/test.txt":                     {},
+		"../../../test/foo/fou":                              {},
+		"../../../test/foo/fou/bar -> ../../../test/foo/bar": {},
+		"../../../test/foo/fou/keep":                         {},
+		"../../../test/foo/fou/keep/.gitkeep":                {},
 	}
 
 	for _, path := range sys {
@@ -42,7 +44,7 @@ func TestScan(t *testing.T) {
 }
 
 func TestScanWithAbsolutePaths(t *testing.T) {
-	absRoot, err := filepath.Abs("../../test/foo")
+	absRoot, err := filepath.Abs("../../../test/foo")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -57,6 +59,7 @@ func TestScanWithAbsolutePaths(t *testing.T) {
 	}
 
 	expected := map[string]struct{}{
+		absRoot:                                     {},
 		absRoot + "/bar":                            {},
 		absRoot + "/bar/broken_sl -> [broken]":      {},
 		absRoot + "/bar/test.txt":                   {},
@@ -81,7 +84,7 @@ func TestScanWithAbsolutePaths(t *testing.T) {
 }
 
 func TestScanEmptyDirectory(t *testing.T) {
-	root := "../../test/empty"
+	root := "../../../test/empty"
 	prm, err := param.New("test", []string{root})
 	if err != nil {
 		t.Fatal(err)
@@ -108,7 +111,7 @@ func TestScanEmptyDirectory(t *testing.T) {
 }
 
 func TestScanFlexiblePaths(t *testing.T) {
-	root, err := filepath.Abs("../../test/foo")
+	root, err := filepath.Abs("../../../test/foo")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -123,6 +126,7 @@ func TestScanFlexiblePaths(t *testing.T) {
 	}
 
 	expected := map[string]struct{}{
+		filepath.Join(root, ""):                                       {},
 		filepath.Join(root, "bar"):                                    {},
 		filepath.Join(root, "bar/broken_sl -> [broken]"):              {},
 		filepath.Join(root, "bar/test.txt"):                           {},

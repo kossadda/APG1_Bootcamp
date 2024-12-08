@@ -13,7 +13,7 @@ func main() {
 	args := os.Args[1:]
 	w, err := wc.New("wc", &args)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error:", err)
+		fmt.Fprintf(os.Stderr, "%s: %v\n", os.Args[0], err)
 		return
 	}
 
