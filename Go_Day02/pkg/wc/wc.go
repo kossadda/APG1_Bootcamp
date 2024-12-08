@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 	"sync"
 	"unicode/utf8"
 )
@@ -19,50 +20,6 @@ const (
 
 type WC uint8
 
-func (wc WC) FileInfo(filename string) string {
-	if mask := wc & allMask; mask == lMask || mask == mMask {
-		return wc.fileReader(filename)
-	} else {
-		return wc.permission(filename)
-	}
-}
-
-func (wc WC) fileReader(filename string) string {
-	file, err := os.Open(filename)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return ""
-	}
-	defer file.Close()
-
-	cnt := 0
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		if wc&allMask == lMask {
-			cnt++
-		} else {
-			cnt += utf8.RuneCountInString(scanner.Text())
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return ""
-	}
-
-	return fmt.Sprint(cnt)
-}
-
-func (wc WC) permission(filename string) string {
-	info, err := os.Stat(filename)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return ""
-	}
-
-	return info.Mode().String()
-}
-
 func New(name string, args *[]string) (wc WC, err error) {
 	m := make(map[string]*bool)
 	fs := flag.NewFlagSet(name, flag.ContinueOnError)
@@ -75,8 +32,8 @@ func New(name string, args *[]string) (wc WC, err error) {
 		return 0, errors.New("try again")
 	}
 	*args = fs.Args()
-	if path, ok := validPaths(*args); !ok {
-		return 0, fmt.Errorf("invalid filepath %s", path)
+	if err := validPaths(*args); err != nil {
+		return 0, err
 	}
 
 	for fl, ok := range m {
@@ -97,16 +54,6 @@ func New(name string, args *[]string) (wc WC, err error) {
 	return wc, nil
 }
 
-func validPaths(args []string) (string, bool) {
-	for _, path := range args {
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			return path, false
-		}
-	}
-
-	return "", true
-}
-
 func Output(args []string, w WC) chan string {
 	ch := make(chan string)
 
@@ -117,7 +64,7 @@ func Output(args []string, w WC) chan string {
 		for _, path := range args {
 			go func() {
 				defer wg.Done()
-				ch <- fmt.Sprintf("%s\t%s", w.FileInfo(path), path)
+				ch <- fmt.Sprintf("%s\t%s", w.fileInfo(path), path)
 			}()
 		}
 
@@ -126,4 +73,64 @@ func Output(args []string, w WC) chan string {
 	}()
 
 	return ch
+}
+
+func (wc WC) fileInfo(filename string) string {
+	file, er := os.Open(filename)
+	if er != nil {
+		fmt.Fprintln(os.Stderr, er)
+		return ""
+	}
+	defer file.Close()
+
+	cnt := 0
+	reader := bufio.NewReader(file)
+
+	for {
+		line, ok := reader.ReadString('\n')
+		err := func() string {
+			if ok != nil {
+				return ok.Error()
+			}
+			return ""
+		}
+
+		if ok != nil && ok.Error() != "EOF" {
+			fmt.Fprintln(os.Stderr, "Error while reading", ok)
+			return ""
+		}
+
+		switch wc & allMask {
+		case lMask:
+			if err() == "" {
+				cnt++
+			}
+		case mMask:
+			cnt += utf8.RuneCountInString(line)
+		default:
+			cnt += len(strings.Fields(line))
+		}
+
+		if err() == "EOF" {
+			break
+		}
+	}
+
+	return fmt.Sprint(cnt)
+}
+
+func validPaths(args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("enter one or more text files")
+	}
+
+	for _, path := range args {
+		if info, err := os.Stat(path); info != nil && info.IsDir() {
+			return fmt.Errorf("'%s' is directory", path)
+		} else if os.IsNotExist(err) {
+			return fmt.Errorf("file '%s' is not exists", path)
+		}
+	}
+
+	return nil
 }
