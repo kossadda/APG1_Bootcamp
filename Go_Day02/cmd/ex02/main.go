@@ -1,3 +1,5 @@
+// Main package demonstrates the usage of the xargs utility.
+// It reads arguments from stdin and executes the given command with those arguments.
 package main
 
 import (
