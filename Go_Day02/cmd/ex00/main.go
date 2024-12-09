@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	prm, err := param.New("test", os.Args[1:])
+	prm, err := param.New(os.Args[1:])
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", os.Args[0], err)
 		return

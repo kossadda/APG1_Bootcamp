@@ -9,7 +9,7 @@ import (
 
 func TestScan(t *testing.T) {
 	root := "../../../test/foo"
-	prm, err := param.New("test", []string{root})
+	prm, err := param.New([]string{root})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,7 +49,7 @@ func TestScanWithAbsolutePaths(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	prm, err := param.New("test", []string{absRoot})
+	prm, err := param.New([]string{absRoot})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -85,7 +85,7 @@ func TestScanWithAbsolutePaths(t *testing.T) {
 
 func TestScanEmptyDirectory(t *testing.T) {
 	root := "../../../test/empty"
-	prm, err := param.New("test", []string{root})
+	prm, err := param.New([]string{root})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -101,7 +101,7 @@ func TestScanFlexiblePaths(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	prm, err := param.New("test", []string{root})
+	prm, err := param.New([]string{root})
 	if err != nil {
 		t.Fatal(err)
 	}

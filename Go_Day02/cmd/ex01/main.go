@@ -11,7 +11,7 @@ import (
 
 func main() {
 	args := os.Args[1:]
-	w, err := wc.New("wc", &args)
+	w, err := wc.New(&args)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", os.Args[0], err)
 		return

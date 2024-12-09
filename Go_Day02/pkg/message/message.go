@@ -31,6 +31,10 @@ func WCUsage(fs *flag.FlagSet) error {
 	return resp{err: fsusage("[OPTION] [FILE/DIR]...", fs)}
 }
 
+func ArchiveUsage(fs *flag.FlagSet) error {
+	return resp{err: fsusage("[OPTION] [FILE/DIR]...", fs)}
+}
+
 // NotExists returns an error indicating that the specified file or directory does not exist.
 // Takes the filename or directory name as a parameter.
 func NotExists(filename string) error {
@@ -65,7 +69,19 @@ func EmptyCommand() error {
 // IsDirectory returns an error indicating that the specified path is a directory, not a file.
 // Takes the path as input.
 func IsDirectory(path string) error {
-	return resp{err: fmt.Sprintf("'%s' is directory", os.Args[0])}
+	return resp{err: fmt.Sprintf("'%s' is directory", path)}
+}
+
+func IsNotDirectory(path string) error {
+	return resp{err: fmt.Sprintf("'%s' is not directory", path)}
+}
+
+func EmptyDirectory() error {
+	return resp{err: "-a provided by empty directory"}
+}
+
+func FailedArchive(err error) error {
+	return resp{err: fmt.Sprintf("failed to write header to archive: %s", err)}
 }
 
 // fsusage generates a formatted usage string based on the given usage format and FlagSet.

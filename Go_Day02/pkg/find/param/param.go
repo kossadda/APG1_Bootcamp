@@ -48,8 +48,8 @@ func (p *Param) IsSetExt() bool {
 // New parses the provided command-line arguments and returns a Param struct
 // containing the parsed filters and the directory path. It returns an error
 // if the flags are invalid or incomplete.
-func New(setName string, args []string) (*Param, error) {
-	fs := flag.NewFlagSet(setName, flag.ContinueOnError)
+func New(args []string) (*Param, error) {
+	fs := flag.NewFlagSet("find", flag.ContinueOnError)
 
 	sl := fs.Bool("sl", false, "Set search pattern: symbolic link")
 	f := fs.Bool("f", false, "Set search pattern: files")
@@ -62,7 +62,7 @@ func New(setName string, args []string) (*Param, error) {
 
 	err := fs.Parse(args)
 	if err != nil {
-		return &Param{}, err
+		return nil, err
 	}
 
 	return parseFlags(fs, *sl, *d, *f, *ext)
@@ -84,7 +84,7 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 
 	if ext != "" {
 		if !f {
-			return &Param{}, message.InvalidExtUse()
+			return nil, message.InvalidExtUse()
 		}
 
 		p.flags |= extMask
@@ -92,7 +92,7 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 	}
 
 	if len(fs.Args()) != 1 {
-		return &Param{}, message.InvalidArgument()
+		return nil, message.InvalidArgument()
 	}
 
 	if func() bool {
@@ -104,7 +104,7 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 		})
 		return extUsed
 	}() && ext == "" {
-		return &Param{}, message.EmptyExt()
+		return nil, message.EmptyExt()
 	}
 
 	p.Path = fs.Args()[0]

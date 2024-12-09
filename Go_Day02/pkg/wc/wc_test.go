@@ -59,7 +59,7 @@ func TestAll(t *testing.T) {
 				m[val] = struct{}{}
 			}
 
-			w, err := New("wc", &tt.input)
+			w, err := New(&tt.input)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("unexpected error state: got %v, wantErr %v", err, tt.wantErr)
 				return

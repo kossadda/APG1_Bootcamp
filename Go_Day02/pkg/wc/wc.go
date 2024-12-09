@@ -87,9 +87,9 @@ func validPaths(args []string) error {
 
 // New initializes a WC type based on the provided command-line arguments.
 // It processes flags, validates file paths, and ensures only one flag is set.
-func New(name string, args *[]string) (wc WC, err error) {
+func New(args *[]string) (wc WC, err error) {
 	m := make(map[string]*bool)
-	fs := flag.NewFlagSet(name, flag.ContinueOnError)
+	fs := flag.NewFlagSet("wc", flag.ContinueOnError)
 
 	m["l"] = fs.Bool("l", false, "show permission of file")
 	m["m"] = fs.Bool("m", false, "number of str")
