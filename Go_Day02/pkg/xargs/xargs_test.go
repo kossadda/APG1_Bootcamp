@@ -53,9 +53,12 @@ func TestExecute_CommandSuccess(t *testing.T) {
 
 	r, w, _ := os.Pipe()
 	defer r.Close()
-	defer w.Close()
 
-	w.Write([]byte(input))
+	_, err := w.Write([]byte(input))
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
 	w.Close()
 	os.Stdin = r
 

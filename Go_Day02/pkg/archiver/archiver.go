@@ -18,12 +18,12 @@ type Archiver string
 func (a Archiver) RotateFiles(files []string) {
 	erch := make(chan error)
 	for _, path := range files {
-		go func() {
+		go func(file string) {
 			erch <- a.RotateFile(path)
-		}()
+		}(path)
 	}
 
-	for range len(files) {
+	for range files {
 		if err := <-erch; err != nil {
 			fmt.Fprintf(os.Stderr, "%s: %v\n", os.Args[0], err)
 		}
