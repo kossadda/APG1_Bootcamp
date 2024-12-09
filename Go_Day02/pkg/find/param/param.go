@@ -7,6 +7,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/kossadda/APG1_Bootcamp/pkg/response"
 )
 
 const (
@@ -55,10 +57,7 @@ func New(setName string, args []string) (*Param, error) {
 	ext := fs.String("ext", "", "Set search pattern: file extensions (use with -f)")
 
 	fs.Usage = func() {
-		fmt.Fprintf(os.Stderr, "Usage: %s [OPTION]... [FILE/DIR]\n", os.Args[0])
-		fs.VisitAll(func(f *flag.Flag) {
-			fmt.Fprintf(os.Stderr, "  -%s\t%s\n", f.Name, f.Usage)
-		})
+		fmt.Fprint(os.Stderr, response.FindUsage(fs))
 	}
 
 	err := fs.Parse(args)
@@ -85,7 +84,7 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 
 	if ext != "" {
 		if !f {
-			return &Param{}, fmt.Errorf("flag -ext provided but -f is not used")
+			return &Param{}, response.InvalidExtUse()
 		}
 
 		p.flags |= extMask
@@ -93,7 +92,7 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 	}
 
 	if len(fs.Args()) != 1 {
-		return &Param{}, fmt.Errorf("provide one path argument at the end")
+		return &Param{}, response.InvalidArgument()
 	}
 
 	if func() bool {
@@ -105,7 +104,7 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 		})
 		return extUsed
 	}() && ext == "" {
-		return &Param{}, fmt.Errorf("flag -ext provided but extension is empty")
+		return &Param{}, response.EmptyExt()
 	}
 
 	p.Path = fs.Args()[0]

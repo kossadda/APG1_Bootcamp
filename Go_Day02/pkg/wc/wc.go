@@ -13,6 +13,8 @@ import (
 	"strings"
 	"sync"
 	"unicode/utf8"
+
+	"github.com/kossadda/APG1_Bootcamp/pkg/response"
 )
 
 // Constants representing the flag masks for line, word, and character counts.
@@ -69,14 +71,14 @@ func (wc WC) fileInfo(filename string) string {
 // It ensures that files exist and are not directories.
 func validPaths(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("enter one or more text files")
+		return response.InvalidArgument()
 	}
 
 	for _, path := range args {
 		if info, err := os.Stat(path); info != nil && info.IsDir() {
-			return fmt.Errorf("'%s' is directory", path)
+			return response.IsDirectory(path)
 		} else if os.IsNotExist(err) {
-			return fmt.Errorf("file '%s' does not exists", path)
+			return response.NotExists(path)
 		}
 	}
 
@@ -94,17 +96,14 @@ func New(name string, args *[]string) (wc WC, err error) {
 	m["w"] = fs.Bool("w", false, "number of symbols")
 
 	fs.Usage = func() {
-		fmt.Fprintf(os.Stderr, "Usage: %s [OPTION] [FILE/DIR]...\n", os.Args[0])
-		fs.VisitAll(func(f *flag.Flag) {
-			fmt.Fprintf(os.Stderr, "  -%s\t%s\n", f.Name, f.Usage)
-		})
+		fmt.Fprint(os.Stderr, response.WCUsage(fs))
 	}
 
 	if err = fs.Parse(*args); err != nil {
-		return 0, errors.New("try again")
+		return 0, err
 	}
 	*args = fs.Args()
-	if err := validPaths(*args); err != nil {
+	if err = validPaths(*args); err != nil {
 		return 0, err
 	}
 
@@ -120,7 +119,7 @@ func New(name string, args *[]string) (wc WC, err error) {
 	}
 
 	if wc&(wc-1) != 0 {
-		return 0, errors.New("multiple or no flags are set")
+		return 0, response.InvalidFlag()
 	}
 
 	return wc, nil

@@ -89,24 +89,9 @@ func TestScanEmptyDirectory(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	sys, err := Scan(prm)
-	if err != nil {
+	_, err = Scan(prm)
+	if err == nil {
 		t.Fatal(err)
-	}
-
-	expected := map[string]struct{}{}
-
-	for _, path := range sys {
-		if _, ok := expected[path]; !ok {
-			t.Errorf("unexpected path: %s", path)
-		}
-		delete(expected, path)
-	}
-
-	if len(expected) > 0 {
-		for path := range expected {
-			t.Errorf("missing expected path: %s", path)
-		}
 	}
 }
 

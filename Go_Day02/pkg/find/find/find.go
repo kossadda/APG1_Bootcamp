@@ -4,12 +4,12 @@
 package find
 
 import (
-	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
 
 	"github.com/kossadda/APG1_Bootcamp/pkg/find/param"
+	"github.com/kossadda/APG1_Bootcamp/pkg/response"
 )
 
 // Scan walks through a directory (and its subdirectories) and filters items based on the provided
@@ -19,10 +19,9 @@ func Scan(prm *param.Param) ([]string, error) {
 	var sys []string
 
 	err := filepath.WalkDir(prm.Path, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			if os.IsNotExist(err) {
-				fmt.Fprintf(os.Stderr, "%s: ‘%s’: No such file or directory\n", os.Args[0], prm.Path)
-			}
+		if os.IsNotExist(err) {
+			return response.NotExists(prm.Path)
+		} else if err != nil {
 			return nil
 		}
 

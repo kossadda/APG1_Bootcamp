@@ -4,9 +4,10 @@ package xargs
 
 import (
 	"bufio"
-	"errors"
 	"os"
 	"os/exec"
+
+	"github.com/kossadda/APG1_Bootcamp/pkg/response"
 )
 
 // XArgs represents the xargs utility, holding the command to be executed and its arguments.
@@ -40,7 +41,7 @@ func New() (*XArgs, error) {
 
 	secondArgs := os.Args[1:]
 	if len(secondArgs) == 0 {
-		return nil, errors.New("input command name for xargs")
+		return nil, response.EmptyCommand()
 	}
 
 	xg.cmd = secondArgs[0]

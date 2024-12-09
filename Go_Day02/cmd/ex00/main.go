@@ -22,6 +22,7 @@ func main() {
 	sys, err := find.Scan(prm)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", os.Args[0], err)
+		return
 	}
 
 	for i := range sys {

@@ -12,7 +12,7 @@ import (
 func main() {
 	xg, err := xargs.New()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error:", err)
+		fmt.Fprintf(os.Stderr, "%s: %v\n", os.Args[0], err)
 		return
 	}
 
