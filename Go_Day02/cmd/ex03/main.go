@@ -1,3 +1,6 @@
+// Package main is the entry point for the archiving program. It parses command-line arguments,
+// creates an Archiver instance, and uses it to rotate (archive) the specified files into tar.gz
+// archives. Any errors during the archiving process are printed to the standard error output.
 package main
 
 import (

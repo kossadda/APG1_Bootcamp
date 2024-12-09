@@ -1,3 +1,7 @@
+// Package archiver provides functionality to create tar.gz archives of files.
+// It allows rotating files, which means creating archives of the files
+// in the specified directory. The package supports handling errors related
+// to archiving and file operations.
 package archiver
 
 import (
@@ -13,8 +17,11 @@ import (
 	"github.com/kossadda/APG1_Bootcamp/pkg/message"
 )
 
+// Archiver is a type that represents the directory path where archives will be created.
 type Archiver string
 
+// RotateFiles creates a new archive for each file in the provided list of file paths.
+// It runs each file rotation concurrently and waits for all operations to complete.
 func (a Archiver) RotateFiles(files []string) {
 	erch := make(chan error)
 	for _, path := range files {
@@ -30,6 +37,9 @@ func (a Archiver) RotateFiles(files []string) {
 	}
 }
 
+// RotateFile creates a tar.gz archive of a single file.
+// The archive is named based on the file name and modification time.
+// If the provided file is a directory, an error is returned.
 func (a Archiver) RotateFile(file string) error {
 	info, err := os.Stat(file)
 	if err != nil {
@@ -80,6 +90,9 @@ func (a Archiver) RotateFile(file string) error {
 	return nil
 }
 
+// New initializes a new Archiver based on the provided command-line arguments.
+// It checks the validity of the path and files to be archived.
+// If an invalid path is provided, an error is returned.
 func New(args *[]string) (*Archiver, error) {
 	fs := flag.NewFlagSet("archiver", flag.ContinueOnError)
 
