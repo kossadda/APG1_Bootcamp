@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kossadda/APG1_Bootcamp/pkg/response"
+	"github.com/kossadda/APG1_Bootcamp/pkg/message"
 )
 
 func TestNew(t *testing.T) {
@@ -42,13 +42,13 @@ func TestNew(t *testing.T) {
 			name: "use -ext without -f",
 			args: []string{"-ext", "txt", "/home"},
 			exp:  Param{},
-			err:  response.InvalidExtUse(),
+			err:  message.InvalidExtUse(),
 		},
 		{
 			name: "use -ext with empty value",
 			args: []string{"-f", "-ext", "", "/home"},
 			exp:  Param{},
-			err:  response.EmptyExt(),
+			err:  message.EmptyExt(),
 		},
 		{
 			name: "use multiple flags",
@@ -66,13 +66,13 @@ func TestNew(t *testing.T) {
 			name: "no path provided",
 			args: []string{"-sl"},
 			exp:  Param{},
-			err:  response.InvalidArgument(),
+			err:  message.InvalidArgument(),
 		},
 		{
 			name: "too many arguments",
 			args: []string{"-sl", "/home", "/extra"},
 			exp:  Param{},
-			err:  response.InvalidArgument(),
+			err:  message.InvalidArgument(),
 		},
 		{
 			name: "unknown flag",

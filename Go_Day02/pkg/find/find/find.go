@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/kossadda/APG1_Bootcamp/pkg/find/param"
-	"github.com/kossadda/APG1_Bootcamp/pkg/response"
+	"github.com/kossadda/APG1_Bootcamp/pkg/message"
 )
 
 // Scan walks through a directory (and its subdirectories) and filters items based on the provided
@@ -20,7 +20,7 @@ func Scan(prm *param.Param) ([]string, error) {
 
 	err := filepath.WalkDir(prm.Path, func(path string, d fs.DirEntry, err error) error {
 		if os.IsNotExist(err) {
-			return response.NotExists(prm.Path)
+			return message.NotExists(prm.Path)
 		} else if err != nil {
 			return nil
 		}

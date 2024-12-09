@@ -14,7 +14,7 @@ import (
 	"sync"
 	"unicode/utf8"
 
-	"github.com/kossadda/APG1_Bootcamp/pkg/response"
+	"github.com/kossadda/APG1_Bootcamp/pkg/message"
 )
 
 // Constants representing the flag masks for line, word, and character counts.
@@ -71,14 +71,14 @@ func (wc WC) fileInfo(filename string) string {
 // It ensures that files exist and are not directories.
 func validPaths(args []string) error {
 	if len(args) == 0 {
-		return response.InvalidArgument()
+		return message.InvalidArgument()
 	}
 
 	for _, path := range args {
 		if info, err := os.Stat(path); info != nil && info.IsDir() {
-			return response.IsDirectory(path)
+			return message.IsDirectory(path)
 		} else if os.IsNotExist(err) {
-			return response.NotExists(path)
+			return message.NotExists(path)
 		}
 	}
 
@@ -96,7 +96,7 @@ func New(name string, args *[]string) (wc WC, err error) {
 	m["w"] = fs.Bool("w", false, "number of symbols")
 
 	fs.Usage = func() {
-		fmt.Fprint(os.Stderr, response.WCUsage(fs))
+		fmt.Fprint(os.Stderr, message.WCUsage(fs))
 	}
 
 	if err = fs.Parse(*args); err != nil {
@@ -119,7 +119,7 @@ func New(name string, args *[]string) (wc WC, err error) {
 	}
 
 	if wc&(wc-1) != 0 {
-		return 0, response.InvalidFlag()
+		return 0, message.InvalidFlag()
 	}
 
 	return wc, nil

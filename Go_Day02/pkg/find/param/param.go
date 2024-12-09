@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kossadda/APG1_Bootcamp/pkg/response"
+	"github.com/kossadda/APG1_Bootcamp/pkg/message"
 )
 
 const (
@@ -57,7 +57,7 @@ func New(setName string, args []string) (*Param, error) {
 	ext := fs.String("ext", "", "Set search pattern: file extensions (use with -f)")
 
 	fs.Usage = func() {
-		fmt.Fprint(os.Stderr, response.FindUsage(fs))
+		fmt.Fprint(os.Stderr, message.FindUsage(fs))
 	}
 
 	err := fs.Parse(args)
@@ -84,7 +84,7 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 
 	if ext != "" {
 		if !f {
-			return &Param{}, response.InvalidExtUse()
+			return &Param{}, message.InvalidExtUse()
 		}
 
 		p.flags |= extMask
@@ -92,7 +92,7 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 	}
 
 	if len(fs.Args()) != 1 {
-		return &Param{}, response.InvalidArgument()
+		return &Param{}, message.InvalidArgument()
 	}
 
 	if func() bool {
@@ -104,7 +104,7 @@ func parseFlags(fs *flag.FlagSet, sl, d, f bool, ext string) (*Param, error) {
 		})
 		return extUsed
 	}() && ext == "" {
-		return &Param{}, response.EmptyExt()
+		return &Param{}, message.EmptyExt()
 	}
 
 	p.Path = fs.Args()[0]

@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/kossadda/APG1_Bootcamp/pkg/response"
+	"github.com/kossadda/APG1_Bootcamp/pkg/message"
 )
 
 // XArgs represents the xargs utility, holding the command to be executed and its arguments.
@@ -41,7 +41,7 @@ func New() (*XArgs, error) {
 
 	secondArgs := os.Args[1:]
 	if len(secondArgs) == 0 {
-		return nil, response.EmptyCommand()
+		return nil, message.EmptyCommand()
 	}
 
 	xg.cmd = secondArgs[0]
