@@ -104,9 +104,9 @@ Elasticsearch — это полнотекстовый поисковый дви�
 }
 ```
 
-Again, assuming the cURL commands are just a reference for self-testing, this action should be performed by the Go program you write.
+Предполагая, что команды cURL предназначены только для самостоятельного тестирования, это действие должно быть выполнено программой на Go, которую вы напишете.
 
-Now you have a dataset to upload. You should use the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.4/docs-bulk.html) to do this. All existing Elasticsearch bindings provide wrappers for this, for example [here's a good example](https://github.com/elastic/go-elasticsearch/blob/master/_examples/bulk/indexer.go) for an official client<!--- (note that you need to use client v7 for ES version 7.9, not v8)-->. There are also a number of third-party clients, choose which you prefer.
+Теперь у вас есть набор данных для загрузки. Вы должны использовать [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/8.4/docs-bulk.html) для этого. Все существующие привязки Elasticsearch предоставляют обёртки для этого, например, [вот хороший пример](zzzhttps://github.com/elastic/go-elasticsearch/blob/master/_examples/bulk/indexer.go) для официального клиента<!--- (обратите внимание, что вам нужно использовать клиента версии v7 для Elasticsearch версии 7.9, а не v8)-->. Также существует ряд сторонних клиентов, выберите тот, который вам больше подходит.
 
 Чтобы проверить себя, вы можете использовать cURL. Так:
 
